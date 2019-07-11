@@ -18,6 +18,9 @@ namespace SistemaAluguelCarro
         }
         #region metodos
 
+        /// <summary>
+        /// Metodo abre opções para seleção
+        /// </summary>
         private static void MostrarMenuPrincipal()
         {
             switch (MenuInicialSistema())
@@ -30,6 +33,10 @@ namespace SistemaAluguelCarro
                     PesquisarVeiculos();
                     break;
 
+                case 3:
+                    DevolverVeiculo();
+                    break;
+
                 default:
                     Console.Clear();
                     Console.WriteLine("Obrigado volte sempre");
@@ -37,6 +44,48 @@ namespace SistemaAluguelCarro
             }
         }
 
+        /// <summary>
+        /// metodo da baixa no banco da devolução do carro
+        /// </summary>
+        /// <param name="modeloVeiculo"></param>
+        private static void DevolverVeiculo()
+        {
+            Console.Clear();
+            MostrarSejaBemVindo();
+
+            MostrarTodosDaLista();
+
+            Console.WriteLine("");
+            Console.WriteLine("Digite o modelo do veículo para devolver");
+            var modeloVeiculo = Console.ReadLine();
+
+            Console.WriteLine("");
+
+            if (!PesquisarVeiculoDesejado(modeloVeiculo))
+            {
+                for (int i = 0; i < bancoDeCarros.GetLength(0); i++)
+                {
+                    if (modeloVeiculo == bancoDeCarros[i, 0])
+                    {
+                        MostrarSejaBemVindo();
+                        bancoDeCarros[i, 2] = "sim";
+                        Console.WriteLine("\r\ncarro devolvido com sucesso!");
+                        MostrarVoltarInicio();
+                    }
+                }
+            }
+            else
+            {
+                MostrarSejaBemVindo();
+                Console.WriteLine("Carro invalido, escolha novamente");
+                Thread.Sleep(2000);
+                DevolverVeiculo();
+            }
+        }
+
+        /// <summary>
+        /// Metodo mostra lista de veiculos por ano, modelo, disponibilidade ou todos
+        /// </summary>
         private static void PesquisarVeiculos()
         {
             Console.Clear();
@@ -72,10 +121,7 @@ namespace SistemaAluguelCarro
                     break;
                 case 4:
 
-                    for (int i = 0; i < bancoDeCarros.GetLength(0); i++)
-                    {
-                        Console.WriteLine($"Modelo: {bancoDeCarros[i, 0]}, de ano {bancoDeCarros[i, 1]}, Esta disponivel para locação?:{bancoDeCarros[i, 2]} ");
-                    }
+                    MostrarTodosDaLista();
 
                     MostrarVoltarInicio();
                     break;
@@ -86,6 +132,9 @@ namespace SistemaAluguelCarro
             }
         }
 
+        /// <summary>
+        /// metodo retorna ao menu inicial
+        /// </summary>
         private static void MostrarVoltarInicio()
         {
             Console.WriteLine("\r\nPressione qualquer tecla para voltar");
@@ -101,6 +150,11 @@ namespace SistemaAluguelCarro
             Console.Clear();
             MostrarSejaBemVindo();
             Console.WriteLine("Menu de locação de veiculos");
+
+            Console.WriteLine("");
+            MostrarTodosDaLista();
+            Console.WriteLine("");
+
             Console.WriteLine("Digite o modelo do veículo desejado");
             var modeloVeiculo = Console.ReadLine();
 
@@ -118,7 +172,7 @@ namespace SistemaAluguelCarro
                     Console.WriteLine("Obrigado volte sempre");
                 }
             }
-
+            MostrarVoltarInicio();
         }
 
         /// <summary>
@@ -138,6 +192,7 @@ namespace SistemaAluguelCarro
                 }
             }
         }
+
 
         public static bool PesquisarVeiculoDesejado(string modeloVeiculo)
         {
@@ -177,12 +232,27 @@ namespace SistemaAluguelCarro
             Console.WriteLine("Escolha o numero abaixo para continuar");
             Console.WriteLine("1 - Alugar um carro");
             Console.WriteLine("2 - Pesquisar veiculos");
-            Console.WriteLine("3 - Sair do sistema");
+            Console.WriteLine("3 - Devolver Veiculo");
+            Console.WriteLine("4 - Sair do sistema");
             Console.WriteLine("make your choice");
 
             int.TryParse(Console.ReadKey().KeyChar.ToString(), out int opcao);
             return opcao;
         }
+
+        /// <summary>
+        /// Metodo mostra a lista de veiculos
+        /// </summary>
+        public static void MostrarTodosDaLista()
+        {
+            Console.WriteLine("Lista de Veiculos");
+            for (int i = 0; i < bancoDeCarros.GetLength(0); i++)
+            {
+                Console.WriteLine($"Modelo: {bancoDeCarros[i, 0]}, de ano {bancoDeCarros[i, 1]}, Esta disponivel para locação?:{bancoDeCarros[i, 2]} ");
+            }
+
+        }
+
     }
     #endregion
 }
