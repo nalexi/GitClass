@@ -13,38 +13,11 @@ namespace SistemaBibliotecaOnline
         static void Main(string[] args)
         {
             CarregaBaseDeDados();
-
             MostrarSejaBemVindo();
 
-            if (MenuInicial() == 1)
+            if (MenuPrincipal() == 1)
             {
-                Console.Clear();
-                MostrarSejaBemVindo();
-                Console.WriteLine("Menu - Locação livro");
-                Console.WriteLine("Digite o nome do livro a ser locado");
-
-                var nomeLivro = Console.ReadLine();
-
-                if (PesquisaLivroLocacao(nomeLivro))
-                {
-                    Console.Clear();
-                    Console.WriteLine("Voce deseja locar o livro? para sim(1) para não(0)");
-                    if (Console.ReadKey().KeyChar.ToString() == "1")
-                    {
-                        LocarLivro(nomeLivro);
-                        Console.Clear();
-                        Console.WriteLine("Livro locado com sucesso!");
-                    }
-                    else
-                        Console.Clear();
-
-                    Console.WriteLine("Listagem de livros");
-                    for (int i = 0; i < baseDeLivros.GetLength(0); i++)
-                    {
-                        Console.WriteLine($"Livros: {baseDeLivros[i, 1]} Disponivel: {baseDeLivros[i, 1]}");
-                    }
-                    Console.WriteLine("Obrigado");
-                }
+                MostrarMenuLocacao();
             }
             Console.ReadKey();
         }
@@ -67,8 +40,10 @@ namespace SistemaBibliotecaOnline
         /// metodo mostra o conteudo do menu e as opções de escolha
         /// </summary>
         /// <returns>retorna o valor do menu escolhido em um tipo inteiro</returns>
-        public static int MenuInicial()
+        public static int MenuPrincipal()
         {
+            
+
             Console.WriteLine("O que gostaria de realizar?");
             Console.WriteLine("1 - Locar livro");
             Console.WriteLine("2 - Sair do Sistema");
@@ -99,6 +74,8 @@ namespace SistemaBibliotecaOnline
         /// <returns>retorna verdadeiro em caso do livro estiver disponivel</returns>
         public static bool PesquisaLivroLocacao(string nomeLivro)
         {
+            MostrarSejaBemVindo();
+
             nomeLivro = nomeLivro.ToLower().Trim();
 
             for (int i = 0; i < baseDeLivros.GetLength(0); i++)
@@ -126,7 +103,42 @@ namespace SistemaBibliotecaOnline
                     baseDeLivros[i, 1] = "não";
             }
         }
+
+        /// <summary>
+        /// Metodo que carrrega o conteudo inicial da aplicação
+        /// </summary>
+        public static void MostrarMenuLocacao()
+        {
+            Console.Clear();
+            MostrarSejaBemVindo();
+            Console.WriteLine("Menu - Locação livro");
+            Console.WriteLine("Digite o nome do livro a ser locado");
+
+            var nomeLivro = Console.ReadLine();
+
+            if (PesquisaLivroLocacao(nomeLivro))
+            {
+                Console.Clear();
+                Console.WriteLine("Voce deseja locar o livro? para sim(1) para não(0)");
+                if (Console.ReadKey().KeyChar.ToString() == "1")
+                {
+                    LocarLivro(nomeLivro);
+                    Console.Clear();
+                    Console.WriteLine("Livro locado com sucesso!");
+                }
+                else
+                    Console.Clear();
+
+                Console.WriteLine("Listagem de livros");
+                for (int i = 0; i < baseDeLivros.GetLength(0); i++)
+                {
+                    Console.WriteLine($"Livros: {baseDeLivros[i, 0]} Disponivel: {baseDeLivros[i, 1]}");
+                }
+                Console.WriteLine("Obrigado");
+            }
+        }
         #endregion
+                
     }
     /*apresentacao inicial, menu de escolha, summary's, base de dados*/
 }
