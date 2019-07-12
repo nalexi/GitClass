@@ -18,11 +18,14 @@ namespace SistemaBibliotecaOnline
 
             while (opcaoMenu != 3)
             {
-                if (MenuPrincipal() == 1)
+                if (opcaoMenu == 1)
                 {
                     MostrarMenuLocacao();
                 }
-
+                if (opcaoMenu == 2)
+                {
+                    DesalugarLivro();
+                }
                 opcaoMenu = MenuPrincipal();
             }
         }
@@ -80,15 +83,13 @@ namespace SistemaBibliotecaOnline
         /// </summary>
         /// <param name="nomeLivro"> nome do livro a ser pesquisado</param>
         /// <returns>retorna verdadeiro em caso do livro estiver disponivel</returns>
-        public static bool PesquisaLivroLocacao(string nomeLivro)
+        public static bool? PesquisaLivroLocacao(string nomeLivro)
         {
             MostrarSejaBemVindo();
 
-            nomeLivro = nomeLivro.ToLower().Trim();
-
             for (int i = 0; i < baseDeLivros.GetLength(0); i++)
             {
-                if (nomeLivro == baseDeLivros[i, 0])
+                if (CompararNomes(nomeLivro, baseDeLivros[i, 0]))
                 {
                     Console.WriteLine($"O livro: '{nomeLivro}' pode ser locado?:{ baseDeLivros[i, 1]}");
                     return baseDeLivros[i, 1] == "sim";
@@ -96,7 +97,17 @@ namespace SistemaBibliotecaOnline
                 }
 
             }
-            return false;
+            Console.WriteLine("Nenhum livro encontrado, deseja realizar busca novamente?");
+            Console.WriteLine("Digite a opção desejada");
+            Console.WriteLine("Sim(1) ou Não(2)");
+            int.TryParse(Console.ReadKey().KeyChar.ToString(), out int opcao);
+
+            if (opcao == 1)
+            {
+                Console.WriteLine("Digite um livro a ser pesquisado");
+                nomeLivro = Console.ReadLine();
+            }
+            return null;
         }
 
         /// <summary>
@@ -106,9 +117,10 @@ namespace SistemaBibliotecaOnline
         /// <param name="locar">Valor booleano que define se o livro esta ou nao disponivel</param>
         public static void LocarLivro(string nomeLivro, bool locar)
         {
+
             for (int i = 0; i < baseDeLivros.GetLength(0); i++)
             {
-                if (nomeLivro == baseDeLivros[i, 0])
+                if ((CompararNomes(nomeLivro, baseDeLivros[i, 0])))
                 {
                     baseDeLivros[i, 1] = locar ? "não" : "sim";
                 }
@@ -125,8 +137,9 @@ namespace SistemaBibliotecaOnline
 
             MostrarMenuIncialLivros("Locar livro");
             var nomeLivro = Console.ReadLine();
+            var resultadoPesquisa = PesquisaLivroLocacao(nomeLivro);
 
-            if (PesquisaLivroLocacao(nomeLivro))
+            if (resultadoPesquisa != null && resultadoPesquisa == true)
             {
                 Console.Clear();
                 Console.WriteLine("Voce deseja locar o livro? para sim(1) para não(0)");
@@ -159,8 +172,9 @@ namespace SistemaBibliotecaOnline
             MostrarListaDeLivros();
 
             var nomeLivro = Console.ReadLine();
+            var resultadoPesquisa = PesquisaLivroLocacao(nomeLivro);
 
-            if (!PesquisaLivroLocacao(nomeLivro))
+            if (resultadoPesquisa != null && resultadoPesquisa == false)
             {
                 Console.Clear();
                 MostrarSejaBemVindo();
@@ -181,6 +195,20 @@ namespace SistemaBibliotecaOnline
 
             Console.WriteLine($"Menu - {operacao}");
             Console.WriteLine("Digite o nome do livro a ser locado");
+        }
+
+        /// <summary>
+        /// Metodo que ocmpara duas strings deixando em caixa baixa e removendo espaços vazios dentro da mesma
+        /// </summary>
+        /// <param name="primeiro">primeira string a ser comparada</param>
+        /// <param name="segundo">segunda string a ser comparada</param>
+        /// <returns></returns>
+        public static bool CompararNomes(string primeiro, string segundo)
+        {
+            if (primeiro.ToLower().Replace(" ", "") == segundo.ToLower().Replace(" ", ""))
+                return true;
+
+            return false;
         }
         #endregion
 

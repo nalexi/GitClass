@@ -61,7 +61,7 @@ namespace SistemaAluguelCarro
 
             Console.WriteLine("");
 
-            if (!PesquisarVeiculoDesejado(modeloVeiculo))
+            if (!PesquisarVeiculoDesejado(ref modeloVeiculo))
             {
                 for (int i = 0; i < bancoDeCarros.GetLength(0); i++)
                 {
@@ -158,13 +158,13 @@ namespace SistemaAluguelCarro
             Console.WriteLine("Digite o modelo do veículo desejado");
             var modeloVeiculo = Console.ReadLine();
 
-            if (PesquisarVeiculoDesejado(modeloVeiculo))
+            if (PesquisarVeiculoDesejado(ref modeloVeiculo))
             {
                 Console.WriteLine("Deseja alugar o veiculo? sim - 1, nao - 2 ");
                 Console.WriteLine("Digite a opcao desejada");
                 if (Console.ReadKey().KeyChar.ToString() == "1")
                 {
-                    AlugarCarro(modeloVeiculo);
+                    AlugarCarro(ref modeloVeiculo);
                 }
                 else
                 {
@@ -179,11 +179,11 @@ namespace SistemaAluguelCarro
         /// metodo da baixa no banco de aluguel do carro
         /// </summary>
         /// <param name="modeloVeiculo"></param>
-        private static void AlugarCarro(string modeloVeiculo)
+        private static void AlugarCarro(ref string modeloVeiculo)
         {
             for (int i = 0; i < bancoDeCarros.GetLength(0); i++)
             {
-                if (modeloVeiculo == bancoDeCarros[i, 0])
+                if (CompararNomes(modeloVeiculo, bancoDeCarros[i, 0]))
                 {
                     bancoDeCarros[i, 2] = "não";
                     Console.WriteLine("\r\ncarro alugado com sucesso!");
@@ -194,12 +194,12 @@ namespace SistemaAluguelCarro
         }
 
 
-        public static bool PesquisarVeiculoDesejado(string modeloVeiculo)
+        public static bool PesquisarVeiculoDesejado(ref string modeloVeiculo)
         {
-            modeloVeiculo = modeloVeiculo.ToLower().Trim();
+            
             for (int i = 0; i < bancoDeCarros.GetLength(0); i++)
             {
-                if (modeloVeiculo == bancoDeCarros[i, 0])
+                if (CompararNomes(modeloVeiculo, bancoDeCarros[i, 0]))
                 {
                     Console.WriteLine($"Modelo: {modeloVeiculo}, de ano {bancoDeCarros[i, 1]}, Esta disponivel para locação?:{bancoDeCarros[i, 2]} ");
                     return bancoDeCarros[i, 2] == "sim";
@@ -251,6 +251,14 @@ namespace SistemaAluguelCarro
                 Console.WriteLine($"Modelo: {bancoDeCarros[i, 0]}, de ano {bancoDeCarros[i, 1]}, Esta disponivel para locação?:{bancoDeCarros[i, 2]} ");
             }
 
+        }
+
+        public static bool CompararNomes(string primeiro, string segundo)
+        {
+            if (primeiro.ToLower().Replace(" ", "") == segundo.ToLower().Replace(" ", ""))
+                return true;
+
+            return false;
         }
 
     }
