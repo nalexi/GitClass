@@ -45,6 +45,7 @@ namespace Exercicio1VerificarIdade
             opcao = Console.ReadKey().KeyChar.ToString();
             }
 
+          
         }
     }
 }
