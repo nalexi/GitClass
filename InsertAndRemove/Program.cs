@@ -10,7 +10,7 @@ namespace InsertAndRemove
     {
         static void Main(string[] args)
         {
-            string[,] baseDeDados = new string[2, 3];
+            string[,] baseDeDados = new string[2, 5];
 
             int indiceBaseDados = 0;
 
@@ -36,10 +36,17 @@ namespace InsertAndRemove
                         { MostrarInformaçoes(ref baseDeDados); }
                         break;
                     case "4":
+                        { MostrarInformaçoes(ref baseDeDados, "true"); }
+                        break;
+                    case "5":
                         //retorna dentro do caso de escolha, sair do metodo principal ou metodo dentro do contexto
+                        return;
+                    default:
                         {
-                            return;
+                            Console.WriteLine("Digite uma opção valida");
+                            Console.ReadKey();
                         }
+                        break;
                 }
                 escolhaInicial = ApresentaMenuInicial();
             }
@@ -57,7 +64,8 @@ namespace InsertAndRemove
             Console.WriteLine("1 - Inserir um novo registro");
             Console.WriteLine("2 - Remover um novo registro");
             Console.WriteLine("3 - Listar registros");
-            Console.WriteLine("4 - Sair do sistema");
+            Console.WriteLine("4 - Lista as informações destivadas");
+            Console.WriteLine("5 - Sair do sistema");
 
             Console.WriteLine("Digite o numero da opcao desejada");
 
@@ -72,6 +80,7 @@ namespace InsertAndRemove
         /// <param name="pIndiceBaseDeDados"></param>
         public static void InserirValoresNaLista(ref string[,] pBaseDeDados, ref int pIndiceBaseDeDados)
         {
+            AumentaTamanhoDaLista(ref pBaseDeDados);
             Console.WriteLine("Inserindo valores na lista");
 
             Console.WriteLine("Informe nome");
@@ -91,6 +100,8 @@ namespace InsertAndRemove
                 pBaseDeDados[i, 1] = nome;
                 //carregar na segunda coluna valor idade
                 pBaseDeDados[i, 2] = idade;
+                pBaseDeDados[i, 3] = "true";
+                pBaseDeDados[i, 4] = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
                 //finalizado aqui para inserir apenas um registro por vez
                 break;
             }
@@ -100,27 +111,33 @@ namespace InsertAndRemove
         }
 
         /// <summary>
-        /// 
+        /// Mostra informações dentro da base de dados
         /// </summary>
         /// <param name="pBaseDeDados">base de dados para leitura e mostrar para o usuario</param>
-        public static void MostrarInformaçoes(ref string[,] pBaseDeDados)
+        /// <param name="mostrarRegistroInativos">quando identificamos o valor true, o mesmo mostra os valores que nao estao ativos</param>
+        public static void MostrarInformaçoes(ref string[,] pBaseDeDados, string mostrarRegistroInativos = "false")
         {
             //informar que tela esta
             Console.WriteLine("apresenta informações dentro da base de dados");
+            if (mostrarRegistroInativos == "false")
+                Console.WriteLine("Registros desativados dentro do sistema");
 
-            //laço que mostra de maneira formatada as infos
             for (int i = 0; i < pBaseDeDados.GetLength(0); i++)
             {
-
-
-                Console.WriteLine($"ID {pBaseDeDados[i, 0]} " +
-                    $"- Nome:{pBaseDeDados[i, 1]} " +
-                    $"- Idade:{pBaseDeDados[i, 2]}");
+                //aqui deixamos de mostrar as infos que foram desabilitadas no sis
+                if (pBaseDeDados[i, 3] != mostrarRegistroInativos)
+                {
+                    Console.WriteLine($"ID {pBaseDeDados[i, 0]} " +
+                        $"- Nome:{pBaseDeDados[i, 1]} " +
+                        $"- Idade:{pBaseDeDados[i, 2]}" +
+                        $"- Data alteração{pBaseDeDados[i, 4]}");
+                }
             }
             Console.WriteLine("Registro cadastrado com sucesso");
             Console.WriteLine("para voltar ao menu incial, pressione qualquer tecla");
             Console.ReadKey();
         }
+
         /// <summary>
         /// metodo utilizado para remover um registro pelo id
         /// </summary>
@@ -132,9 +149,11 @@ namespace InsertAndRemove
             for (int i = 0; i < pBaseDeDados.GetLength(0); i++)
             {
                 //laço de repetição que mostra infos dentro da tela de exclusao
-                Console.WriteLine($"ID {pBaseDeDados[i, 0]} " +
-                 $"- Nome:{pBaseDeDados[i, 1]} " +
-                 $"- Idade:{pBaseDeDados[i, 2]} ");
+                if (pBaseDeDados[i, 3] != "false")
+                    Console.WriteLine($"ID {pBaseDeDados[i, 0]} " +
+                     $"- Nome:{pBaseDeDados[i, 1]} " +
+                     $"- Idade:{pBaseDeDados[i, 2]}" +
+                     $"- Data alteração{pBaseDeDados[i, 4]}");
             }
 
             Console.WriteLine("Informe o ID do registro a ser removido");
@@ -148,9 +167,8 @@ namespace InsertAndRemove
                 {/*aqui comparamos os registros para validar o id,
                     colocamos && pois a comparação de um valor string com um valor null
                     pode gerar exception*/
-                    pBaseDeDados[i, 0] = null;
-                    pBaseDeDados[i, 1] = null;
-                    pBaseDeDados[i, 2] = null;
+                    pBaseDeDados[i, 3] = "false";
+                    pBaseDeDados[i, 4] = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
                 }
             }
 
@@ -158,6 +176,42 @@ namespace InsertAndRemove
             Console.WriteLine("para voltar ao menu incial, pressione qualquer tecla");
             Console.ReadKey();
 
+        }
+
+        public static void AumentaTamanhoDaLista(ref string[,] pBaseDeDados)
+        {
+            //verifica se precisa criar uma lista maior
+            var limiteDaLista = true;
+
+            //laço verifica se existe registro disponivel
+            for (int i = 0; i < pBaseDeDados.GetLength(0); i++)
+            {
+                //caso ainda existir registro disponivel ele seta variavel "limiteDaLista" para false
+                if (pBaseDeDados[i, 0] == null)
+                {
+                    limiteDaLista = false;
+                }
+            }
+            //caso nao tenha mais regsitro, a variavel fica como true e entao indica que precisamos aumentar
+            if (limiteDaLista)
+            {
+                //criamos uma copia da lista para nao perder valores
+                var listaCopia = pBaseDeDados;
+
+                //aqui limpamos a lista antiga e assinamos novamente com mais espaço
+                pBaseDeDados = new string[pBaseDeDados.GetLength(0) + 5, pBaseDeDados.GetLength(1)];
+
+                //agora copiamos os registros da lista antiga e passamos para nova lista
+                for (int i = 0; i < listaCopia.GetLength(0); i++)
+                {
+                    pBaseDeDados[i, 0] = listaCopia[i, 0];
+                    pBaseDeDados[i, 1] = listaCopia[i, 1];
+                    pBaseDeDados[i, 2] = listaCopia[i, 2];
+                    pBaseDeDados[i, 3] = listaCopia[i, 3];
+                    pBaseDeDados[i, 4] = listaCopia[i, 4];
+                }
+                Console.WriteLine("Tamanho da lista atualizado com sucesso");
+            }
         }
     }
 }
