@@ -207,6 +207,7 @@ namespace ProjetoFinalConsole
                 }
             }
 
+
             //verifica limite alcançado
             if (limiteDaLista)
             {
