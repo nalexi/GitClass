@@ -40,5 +40,6 @@
 --	SUM(TotalVendas), as 'Total Vendas'
 --	MONTH(DataVenda) as 'mes'
 --from TabelaDog;
+--where MONTH(DataVenda) BETWEEN 1 ad 3
 --group by TipoDog, MONTH(DataVenda)
 --order by 'Total Vendas' desc
