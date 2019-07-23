@@ -5,10 +5,10 @@ select Nome from Marcas where UsuInc = 1;
 select Nome from Marcas where UsuInc = 2; 
 
 --3 Trazer somente a quantidade de marcas que Felipe cadastrou do maior para menor
-select COUNT(Nome) as 'Marcas' from Marcas where UsuInc = 2 order by 'Marcas' desc; 
+select COUNT(Nome) as 'Marcas' from Marcas where UsuInc = 1 order by 'Marcas' desc; 
 
 --4 Trazer somente a quantidade de marcas que Giomar cadastrou do menor para maior
-select COUNT(Nome) as 'Marcas' from Marcas where UsuInc = 1 order by 'Marcas' asc; 
+select COUNT(Nome) as 'Marcas' from Marcas where UsuInc = 2 order by 'Marcas' asc; 
 
 --5 Trazer somente a quantidade de marcas que Felipe e Giomar cadastraram 
 select COUNT(Nome) as 'Marcas' from Marcas; 
@@ -32,7 +32,7 @@ select count(Modelo) 'total' from carros;
 select C.Modelo as 'carros', M.Nome as 'Marcas' from Carros C inner join Marcas M on C.Marca = M.Id where M.UsuInc = 1;
 
 --12 Trazer somente os carros das marcas que Giomar cadastrou
-Select C.Modelo as 'Carro' M.Nome as 'MOdelo' from Carros C inner join Marcas M on C.Marca = M.Id where M.UsuInc = 2;
+Select C.Modelo as 'Carro', M.Nome as 'MOdelo' from Carros C inner join Marcas M on C.Marca = M.Id where M.UsuInc = 2;
 
 --13 Trazer somente a quantidade de carros das marcas que Felipe cadastrou maior para menor
 select Count(C.Modelo) as 'Qtde Carro' from Carros C inner join Marcas M on C.Marca = M.Id where M.UsuInc = 1 order by 'Qtde Carro' desc;
