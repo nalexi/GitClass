@@ -14,10 +14,7 @@ namespace ListaBiManeiraSimplesComClass
         {
 
 
-            //cria lista bi
-
-
-            //Iniciamos o nosso objeto de memoria
+             //Iniciamos o nosso objeto de memoria
             var carregaLista = new CarregarLista();
 
             //chama o metodo Carregar lista
