@@ -8,8 +8,6 @@ namespace ExercicioBibliotecaBoletim.ListaFuncoes
 {
     public class Funcoes
     {
-       
-
         public decimal CalcularMedia(int nota1, int nota2, int nota3)
         {
             return (nota1 + nota2 + nota3) / 3;
@@ -20,15 +18,16 @@ namespace ExercicioBibliotecaBoletim.ListaFuncoes
             return ((total - faltas) * 100) / total;
         }
 
-        public void VerificarAprovado(decimal media, decimal frequencia)
+        public string VerificarAprovado(decimal Media, decimal Frequencia)
         {
-            if (media >= 7 && frequencia >= 75)
+
+            if (Media >= 7 && Frequencia >= 75)
             {
-                Console.WriteLine($"Aluno esta Aprovado com media de: {media} e Frequencia de:{frequencia}%");
+                return "Aprovado";
             }
             else
             {
-                Console.WriteLine($"Aluno esta Reprovado com media de: {media} e Frequencia de:{frequencia}%");
+                return "Reprovado";
             }
         }
     }

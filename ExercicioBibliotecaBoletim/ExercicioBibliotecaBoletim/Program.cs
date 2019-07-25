@@ -12,28 +12,47 @@ namespace ExercicioBibliotecaBoletim
         static void Main(string[] args)
         {
             Funcoes funcoes = new Funcoes();
-            Console.WriteLine("BEM VINDO AO MUNDO DAS NOTAS");
-            Console.WriteLine("Digite a primeira nota");
-            int nota1 = Convert.ToInt32(Console.ReadLine());
+            CrudEscola cruds = new CrudEscola();
 
-            Console.WriteLine("Digite a segunda nota");
-            int nota2 = Convert.ToInt32(Console.ReadLine());
 
-            Console.WriteLine("Digite a terceira nota");
-            int nota3 = Convert.ToInt32(Console.ReadLine());
+            while (true)
+            {
+                switch (cruds.MenuInicialSistema())
+                {
+                    case 1:
+                        cruds.InsertAluno();
+                        cruds.Voltar();
+                        break;
 
-            Console.WriteLine("Digite o total de aulas");
-            int total = Convert.ToInt32(Console.ReadLine());
+                    case 2:
+                        cruds.ListarAluno();
+                        cruds.Voltar();
+                        break;
 
-            Console.WriteLine("Digite o total de faltas");
-            int faltas = Convert.ToInt32(Console.ReadLine());
+                    case 3:
+                        cruds.ExcluirAluno();
+                        cruds.Voltar();
+                        break;
 
-            Console.WriteLine($@"Aluno com frequencia de:{funcoes.CalcularFrequencia(total, faltas)}%
-Aluno com media de {funcoes.CalcularMedia(nota1, nota2, nota3)}");
+                    case 4:
+                        cruds.AlterarNota();
+                        cruds.Voltar();
+                        break;
 
-            funcoes.VerificarAprovado(funcoes.CalcularMedia(nota1, nota2, nota3), funcoes.CalcularFrequencia(total,faltas));
+                    case 5:
+                        cruds.AlterarFrequencia();
+                        cruds.Voltar();
+                        break;
 
-            Console.ReadKey();
+                    case 6:
+
+                        { return; }
+
+                    default:
+                        Console.WriteLine("Opção Inválida");
+                        break;
+                }
+            }
         }
     }
 }
