@@ -13,17 +13,19 @@ namespace ExercicioBibliotecaBoletim.ListaFuncoes
 
         string[,] RegAlunos;
         int indiceAluno = 0;
+
+
         const string Ativo = "Ativo";
         const string Inativo = "Inativo";
-
-        public decimal Media { get; set; }
-        public decimal Frequencia { get; set; }
-
 
         public CrudEscola()
         {
             RegAlunos = new string[5, 6]; //id, nome, media, frequencia, situacao, ativo 
         }
+
+        /// <summary>
+        /// Metodo insere aluno na lista e define como Ativo 
+        /// </summary>
         public void InsertAluno()
         {
             MostrarSejaBemVindo();
@@ -43,6 +45,9 @@ namespace ExercicioBibliotecaBoletim.ListaFuncoes
             }
         }
 
+        /// <summary>
+        /// Metodo exibe lista de alunos registrados
+        /// </summary>
         public void ListarAluno()
         {
             MostrarSejaBemVindo();
@@ -56,6 +61,9 @@ namespace ExercicioBibliotecaBoletim.ListaFuncoes
             }
         }
 
+        /// <summary>
+        /// Metodo que altera aluno de ativo para inativo 
+        /// </summary>
         public void ExcluirAluno()
         {
             MostrarSejaBemVindo();
@@ -76,6 +84,9 @@ namespace ExercicioBibliotecaBoletim.ListaFuncoes
             Console.WriteLine("Aluno não encontrado");
         }
 
+        /// <summary>
+        /// Metodo exibe lista de alunos, calcula a Media e atualiza a situação
+        /// </summary>
         public void AlterarNota()
         {
             MostrarSejaBemVindo();
@@ -107,14 +118,13 @@ namespace ExercicioBibliotecaBoletim.ListaFuncoes
             }
         }
 
+        /// <summary>
+        /// Metodo exibe lista de alunos, calcula a frequencia e atualiza a situação
+        /// </summary>
         public void AlterarFrequencia()
         {
             MostrarSejaBemVindo();
-            for (int i = 0; i < RegAlunos.GetLength(0); i++)
-            {
-                Console.WriteLine($"Aluno: {RegAlunos[i, 1]} com Id: {RegAlunos[i, 0]}, " +
-                    $"media{RegAlunos[i, 2]}, frequencia{RegAlunos[i, 3]}, esta {RegAlunos[i, 4]} ");
-            }
+            ListarAluno();
 
             Console.WriteLine("\nDigite o Id do Aluno para alterar Frequencia");
             string pesquisa = Console.ReadKey().KeyChar.ToString();
@@ -140,6 +150,9 @@ namespace ExercicioBibliotecaBoletim.ListaFuncoes
             }
         }
 
+        /// <summary>
+        /// Metodo exibe cabecalho
+        /// </summary>
         public void MostrarSejaBemVindo()
         {
             Console.Clear();
@@ -149,6 +162,10 @@ namespace ExercicioBibliotecaBoletim.ListaFuncoes
 
         }
 
+        /// <summary>
+        /// Metodo exibe o menu de escolhas para o usuario e retorna opcao desejada
+        /// </summary>
+        /// <returns></returns>
         public int MenuInicialSistema()
         {
             MostrarSejaBemVindo();
@@ -164,6 +181,9 @@ namespace ExercicioBibliotecaBoletim.ListaFuncoes
             return opcao;
         }
 
+        /// <summary>
+        /// metodo apenas espera usuario 
+        /// </summary>
         public void Voltar()
         {
             Console.WriteLine("Pressione qualquer tecla");
