@@ -14,16 +14,19 @@ namespace ListaBiManeiraSimplesComClass
         {
 
 
-             //Iniciamos o nosso objeto de memoria
-            var carregaLista = new CarregarLista();
+            //cria lista bi
+
+
+            //Iniciamos o nosso objeto de memoria
+            var Nicholas = new CarregarLista();
 
             //chama o metodo Carregar lista
-            carregaLista.CarregaInformacoesEListaElasEmTela();
+            Nicholas.CarregaInformacoesEListaElasEmTela();
 
             //carrega a classe MostrarLista
-            var mostrarLista = new MostrarLista();
+            var FelipeBlindao = new MostrarLista();
             //chama o metodo
-            mostrarLista.PesquisandoInfoNaNossaLista(carregaLista.ListaNome,"0");
+            FelipeBlindao.PesquisandoInfoNaNossaLista(Nicholas.ListaNome,"0");
 
             Console.ReadKey();
 
