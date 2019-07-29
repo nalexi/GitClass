@@ -21,7 +21,7 @@ namespace ExercicioCantina
                 }
 
                 Console.WriteLine("digite o item desejado");
-                if (metodo.ComprarRisoles(Console.ReadLine()) == true )
+                if (metodo.ComprarRisoles(Console.ReadLine()))
                 {
                     Console.WriteLine("Compra efetuada com sucesso!");
                     Console.WriteLine($"{metodo.Nome}, seu saldo atual" +
